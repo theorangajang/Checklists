@@ -53,6 +53,7 @@ class CheckListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     override func didReceiveMemoryWarning() {
@@ -83,6 +84,28 @@ class CheckListViewController: UITableViewController {
             changeCellAccessory(for: cell, for: item)
         }
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    
+//    Enables swipe and deleting
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        itemsList.remove(at: indexPath.row)
+        
+        let indexPaths = [indexPath]
+        tableView.deleteRows(at: indexPaths, with: .automatic)
+    }
+    
+    @IBAction func addItem(_ sender: Any) {
+        let newRowIndex = itemsList.count
+        
+        let newItem = CheckListItem()
+        newItem.text = "This is a new row"
+        newItem.checked = false
+        itemsList.append(newItem)
+        
+        let indexPath = IndexPath(row: newRowIndex, section: 0)
+        let indexPaths = [indexPath]
+        tableView.insertRows(at: indexPaths, with: .automatic)
     }
     
     func changeCellText(for cell: UITableViewCell, for item: CheckListItem){
